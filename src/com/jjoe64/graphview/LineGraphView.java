@@ -40,9 +40,13 @@ public class LineGraphView extends GraphView {
         String[] labels = super.generateHorlabels(graphwidth);
         String[] dates = new String[labels.length];
         if (xAxisIsDate) {
-            DateFormat format = new SimpleDateFormat("MM/dd");
+            DateFormat format = new SimpleDateFormat("MM/dd HH:mm");
             for (int i = 0; i < labels.length; i++) {
-                Date date = new Date(Long.valueOf(labels[i]));
+            	String str = labels[i].replace(",", "");
+            	if (str.contains(".")) {
+            		str = str.split("\\.")[0];
+            	} 
+                Date date = new Date(Long.valueOf(str));
                 dates[i] = format.format(date).toString();
             }
             return dates;
