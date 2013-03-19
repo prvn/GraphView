@@ -380,7 +380,7 @@ abstract public class GraphView extends LinearLayout {
 		return numberformatter[i].format(value);
 	}
 
-	private String[] generateHorlabels(float graphwidth) {
+	protected String[] generateHorlabels(float graphwidth) {
 		int numLabels = (int) (graphwidth/GraphViewConfig.VERTICAL_LABEL_WIDTH);
 		String[] labels = new String[numLabels+1];
 		double min = getMinX(false);

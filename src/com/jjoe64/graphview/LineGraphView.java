@@ -3,8 +3,11 @@ package com.jjoe64.graphview;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-
 import com.jjoe64.graphview.GraphViewSeries.GraphViewSeriesStyle;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Line Graph View. This draws a line chart.
@@ -17,6 +20,7 @@ import com.jjoe64.graphview.GraphViewSeries.GraphViewSeriesStyle;
 public class LineGraphView extends GraphView {
 	private final Paint paintBackground;
 	private boolean drawBackground;
+    private boolean xAxisIsDate;
 
 	public LineGraphView(Context context, String title) {
 		super(context, title);
@@ -25,6 +29,26 @@ public class LineGraphView extends GraphView {
 		paintBackground.setARGB(255, 20, 40, 60);
 		paintBackground.setStrokeWidth(4);
 	}
+
+    public LineGraphView(Context context, String title, boolean xAxisIsDate) {
+        this(context, title);
+        this.xAxisIsDate = xAxisIsDate;
+    }
+
+    @Override
+    protected String[] generateHorlabels(float graphwidth) {
+        String[] labels = super.generateHorlabels(graphwidth);
+        String[] dates = new String[labels.length];
+        if (xAxisIsDate) {
+            DateFormat format = new SimpleDateFormat("MM/dd");
+            for (int i = 0; i < labels.length; i++) {
+                Date date = new Date(Long.valueOf(labels[i]));
+                dates[i] = format.format(date).toString();
+            }
+            return dates;
+        }
+        return labels;
+    }
 
 	@Override
 	public void drawSeries(Canvas canvas, GraphViewData[] values, float graphwidth, float graphheight, float border, double minX, double minY, double diffX, double diffY, float horstart, GraphViewSeriesStyle style) {
